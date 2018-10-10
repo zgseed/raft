@@ -1,0 +1,46 @@
+syntax = "proto3";
+package raft.rpc;
+option java_multiple_files=false;
+option java_package="com.ly.zgseed.rpc";
+option java_outer_classname = "Raft";
+
+// leader election rpc
+message LeaderVoteRequest {
+    uint32 term = 1;
+    uint32 candidateId =2;
+    uint64 lastLogIndex = 3;
+    uint32 lastLogTerm = 4;
+}
+
+message LeaderVoteResponse {
+    uint32 term = 1;
+    bool voteGranted = 2;
+}
+
+service LeaderVote {
+    rpc LeaderRequest(LeaderVoteRequest) returns (LeaderVoteResponse){};
+}
+
+// append entries rpc (also leader heatbeat rpc)
+message AppendEntryRequest {
+    uint32 term = 1;
+    uint32 leaderId =2;
+    uint64 preLogIndex =3;
+    uint32 preLogTerm = 4;
+    repeated Entry entries = 5;
+    uint64 leaderCommit = 6;
+}
+
+message AppendEntryResponse {
+    uint32 term = 1;
+    bool success = 2;
+}
+
+message Entry {
+    uint32 term = 1;
+    string command = 2;
+}
+
+service AppendEntry {
+    rpc AppendEntry (AppendEntryRequest) returns (AppendEntryResponse) {};
+}
