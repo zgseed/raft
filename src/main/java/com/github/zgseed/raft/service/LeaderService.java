@@ -6,6 +6,6 @@ package com.github.zgseed.raft.service;
  */
 public interface LeaderService {
     boolean logAppend();
-    void heartbeat();
+    void sendHeartbeat();
     boolean logCommit();
 }
